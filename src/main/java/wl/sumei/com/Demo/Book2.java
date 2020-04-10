@@ -46,7 +46,8 @@ public class Book2 {
                 l.add(bt);
             }
 
-            if (l.size() > 0) {
+            System.out.println(l.get(1));
+
                 /*创建字符串输出流*/
                 /*true的意思是在文件内容追加，false是覆盖原内容*/
                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("D:\\" + l.get(1) + ".txt", true));
@@ -106,7 +107,7 @@ public class Book2 {
                     }
 
 
-            }
+
         }
     }
 }

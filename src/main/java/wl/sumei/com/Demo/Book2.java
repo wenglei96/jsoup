@@ -14,43 +14,47 @@ import java.util.ArrayList;
 public class Book2 {
     public static void main(String[] args) throws IOException {
 
-        String url = "https://www.quyuege.com/xs/40/40451/7197731.html";
 
-        while (url != null) {
-            //模拟浏览器登录
-            Connection connect = Jsoup.connect(url);
-            connect.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
-            connect.header("Upgrade-Insecure-Requests", "1");
-            connect.header("Sec-Fetch-User", "?1");
-            connect.header("Sec-Fetch-Site", "none");
-            connect.header("Sec-Fetch-Mode", "navigate");
-            connect.header("Host", "www.quyuege.com");
-            //connect.header("dnt:","1");
-            connect.header("Cookie", "fikker-VyZm-8GxU=HyTKb10yZ9RUVcXwxUOLD1M7XUMYV16L; fikker-VyZm-8GxU=HyTKb10yZ9RUVcXwxUOLD1M7XUMYV16L");
-            connect.header("Connection", "keep-alive");
-            connect.header("Cache-Control", "max-age=0");
-            connect.header("Accept-Language", "zh-CN,zh;q=0.9");
-            connect.header("Accept-Encoding", "gzip, deflate, br");
-            connect.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+        try {
+            String url = "https://www.quyuege.com/xs/38/38589/6804591.html";
+            String urlsz ="";
+
+            while (url != null) {
+                //模拟浏览器登录
+                Connection connect = Jsoup.connect(url);
+                connect.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36");
+                connect.header("Upgrade-Insecure-Requests", "1");
+                connect.header("Sec-Fetch-User", "?1");
+                connect.header("Sec-Fetch-Site", "none");
+                connect.header("Sec-Fetch-Mode", "navigate");
+                connect.header("Host", "www.quyuege.com");
+                //connect.header("dnt:","1");
+                connect.header("Referer",urlsz);
+                connect.header("Cookie", "fikker-VyZm-8GxU=HyTKb10yZ9RUVcXwxUOLD1M7XUMYV16L; fikker-VyZm-8GxU=HyTKb10yZ9RUVcXwxUOLD1M7XUMYV16L");
+                connect.header("Connection", "keep-alive");
+                connect.header("Cache-Control", "max-age=0");
+                connect.header("Accept-Language", "zh-CN,zh;q=0.9");
+                connect.header("Accept-Encoding", "gzip, deflate, br");
+                connect.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
 
 
-            //获取html数据
-            Document document = connect.get();
+                //获取html数据
+                Document document = connect.get();
 
 
-            //获取文章标题
-            Elements se = document.select("div[id=breadcrumb] a");
-            ArrayList<String> l = new ArrayList<String>();
-            for (Element element : se) {
-                String bt = element.text();
-                l.add(bt);
-            }
+                //获取文章标题
+                Elements se = document.select("div[id=breadcrumb] a");
+                ArrayList<String> l = new ArrayList<String>();
+                for (Element element : se) {
+                    String bt = element.text();
+                    l.add(bt);
+                }
 
-            System.out.println(l.get(1));
+                //System.out.println(l.get(1));
 
                 /*创建字符串输出流*/
                 /*true的意思是在文件内容追加，false是覆盖原内容*/
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("D:\\" + l.get(1) + ".txt", true));
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("D:\\xs\\" + l.get(1) + ".txt", true));
 
 
                 Elements select = document.select("div[class=bd] div[class=page-body]");
@@ -95,19 +99,24 @@ public class Book2 {
                 }
 
 
-                    String a1 = ll.get(2);
+                String a1 = ll.get(2);
+                String[] split = a1.split("/");
+                //System.out.println();
+                // System.out.println(a1+" "+split[4]);
+
+                // System.out.println(ss);
+                //判断是否有下一章数据
+                if (split[4].equals(".html")) {
+                    url = null;
+                } else {
                     String ss = "https://www.quyuege.com" + a1;
+                    urlsz ="https://www.quyuege.com"+ll.get(0);
+                    url = ss;
+                }
+            }
 
-                   // System.out.println(ss);
-                    //判断是否有下一章数据
-                    if (ss.equals("https://www.quyuege.com/xs/40/40451/.html")) {
-                        url = null;
-                    } else {
-                        url = ss;
-                    }
-
-
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
